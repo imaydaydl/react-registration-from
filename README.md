@@ -1,3 +1,12 @@
+HOW TO RUN THE PROJECT
+1. Clone the project `git clone https://github.com/imaydaydl/react-registration-from.git`
+2. Install all packages `npm i`
+3. Create a local domain, specifying the directory - the root of the project
+4. Create a `.env` file in the root of the project
+5. Enter the created domain in the `.env` file `REACT_APP_DOMAIN_URL=http://example.com`, where `http://example.com` is created domain
+6. Run the project `npm start`
+7. The link [http://localhost:3000](http://localhost:3000) should open in the browser
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
