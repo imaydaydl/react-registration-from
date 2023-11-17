@@ -1,4 +1,4 @@
-HOW TO RUN THE PROJECT
+# HOW TO RUN THE PROJECT
 1. Clone the project `git clone https://github.com/imaydaydl/react-registration-from.git`
 2. Install all packages `npm i`
 3. Create a local domain, specifying the directory - the root of the project
