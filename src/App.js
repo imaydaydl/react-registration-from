@@ -8,179 +8,179 @@ import "izitoast/dist/css/iziToast.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
-$('.login').on('click', function() {
-  let type = 'login';
-  let f = fields(type);
-
-  let js = {};
-  for(const i in f) {
-    js[f[i]] = $('.'+f[i]).val();
-  }
-  js['action'] = type;
-
-  if(js['login_email'] == '') {
-    izitoast.warning({
-      title: 'Warning!',
-      message: 'Email field can\'t be empty',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else if(js['login_password'] == '') {
-    izitoast.warning({
-      title: 'Warning!',
-      message: 'Password field can\'t be empty',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else {
-
-    $.post(`${process.env.REACT_APP_DOMAIN_URL}/workers/users.php`, js, function(data){
-      data = JSON.parse(data);
-      if(data.error) {
-        izitoast.error({
-          title: 'Error!',
-          message: data.error,
-          close: false,
-          position: 'topRight',
-          timeout: 3000,
-          zindex: 9999999999999
-        });
-      } else if(data.success) {
-        clear(f);
-
-        $('.form-block').hide();
-
-        $('#id').html(data.user_id);
-        $('#name').html(data.user_second_name + ' ' + data.user_name);
-        $('#resitration_date').html(data.registered);
-
-        $('.userblock').show();
-
-        izitoast.success({
-          title: 'Success!',
-          message: 'Login successful',
-          close: false,
-          position: 'topRight',
-          timeout: 3000,
-          zindex: 9999999999999
-        });
-      }
-    });
-
-  }
-});
-
-$('.register').on('click', function() {
-  let type = 'register';
-  let f = fields(type);
-
-  let js = {};
-  for(const i in f) {
-    js[f[i]] = $('.'+f[i]).val();
-  }
-  js['action'] = type;
-
-  if(js['name'] == '') {
-    izitoast.warning({
-      title: 'Warning!',
-      message: 'First Name field can\'t be empty',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else if(js['sname'] == '') {
-    izitoast.warning({
-      title: 'Warning!',
-      message: 'Second Name field can\'t be empty',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else if(!validateEmail(js['email'])) {
-    izitoast.error({
-      title: 'Error!',
-      message: 'Email is not valid',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else if(js['password'] !== js['repeat_password']) {
-    izitoast.error({
-      title: 'Error!',
-      message: 'Password and Repeat Password fields must match',
-      close: false,
-      position: 'topRight',
-      timeout: 3000,
-      zindex: 9999999999999
-    });
-  } else {
-    $.post(`${process.env.REACT_APP_DOMAIN_URL}/workers/users.php`, js, function(data){
-      data = JSON.parse(data);
-      if(data.error) {
-        izitoast.error({
-          title: 'Error!',
-          message: data.error,
-          close: false,
-          position: 'topRight',
-          timeout: 3000,
-          zindex: 9999999999999
-        });
-      } else if(data.success) {
-        clear(f);
-
-        $('button.active').removeClass('active');
-        $('div.show').removeClass('show active');
-
-        $('ul#myTab li:first-child button').addClass('active');
-        $('div.tab-content div:first-child').addClass('show active');
-
-        izitoast.success({
-          title: 'Success!',
-          message: 'Registration successful. Now you can log in with your data',
-          close: false,
-          position: 'topRight',
-          timeout: 3000,
-          zindex: 9999999999999
-        });
-      }
-    });
-  }
-});
-
-function fields(type) {
-  let f = [];
-  switch(type) {
-    case 'login':
-      f = ['login_email', 'login_password'];
-      break;
-    case 'register':
-    default:
-      f = ['name', 'sname', 'email', 'password', 'repeat_password'];
-      break;
-  }
-
-  return f;
-}
-
-function clear(fields) {
-  for(const i in fields) {
-    $('.'+fields[i]).val('');
-  }
-}
-
-function validateEmail(email) {
-  let re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-  return re.test(String(email).toLowerCase());
-}
-
 function App() {
+  function fields(type) {
+    let f = [];
+    switch(type) {
+      case 'login':
+        f = ['login_email', 'login_password'];
+        break;
+      case 'register':
+      default:
+        f = ['name', 'sname', 'email', 'password', 'repeat_password'];
+        break;
+    }
+  
+    return f;
+  }
+  
+  function clear(fields) {
+    for(const i in fields) {
+      $('.'+fields[i]).val('');
+    }
+  }
+  
+  function validateEmail(email) {
+    let re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  function login() {
+    let type = 'login';
+    let f = fields(type);
+  
+    let js = {};
+    for(const i in f) {
+      js[f[i]] = $('.'+f[i]).val();
+    }
+    js['action'] = type;
+  
+    if(js['login_email'] === '') {
+      izitoast.warning({
+        title: 'Warning!',
+        message: 'Email field can\'t be empty',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else if(js['login_password'] === '') {
+      izitoast.warning({
+        title: 'Warning!',
+        message: 'Password field can\'t be empty',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else {
+  
+      $.post(`${process.env.REACT_APP_DOMAIN_URL}/workers/users.php`, js, function(data){
+        data = JSON.parse(data);
+        if(data.error) {
+          izitoast.error({
+            title: 'Error!',
+            message: data.error,
+            close: false,
+            position: 'topRight',
+            timeout: 3000,
+            zindex: 9999999999999
+          });
+        } else if(data.success) {
+          clear(f);
+  
+          $('.form-block').hide();
+  
+          $('#id').html(data.user_id);
+          $('#name').html(data.user_second_name + ' ' + data.user_name);
+          $('#resitration_date').html(data.registered);
+  
+          $('.userblock').show();
+  
+          izitoast.success({
+            title: 'Success!',
+            message: 'Login successful',
+            close: false,
+            position: 'topRight',
+            timeout: 3000,
+            zindex: 9999999999999
+          });
+        }
+      });
+  
+    }
+  }
+  
+  function register() {
+    let type = 'register';
+    let f = fields(type);
+  
+    let js = {};
+    for(const i in f) {
+      js[f[i]] = $('.'+f[i]).val();
+    }
+    js['action'] = type;
+  
+    if(js['name'] === '') {
+      izitoast.warning({
+        title: 'Warning!',
+        message: 'First Name field can\'t be empty',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else if(js['sname'] === '') {
+      izitoast.warning({
+        title: 'Warning!',
+        message: 'Second Name field can\'t be empty',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else if(!validateEmail(js['email'])) {
+      izitoast.error({
+        title: 'Error!',
+        message: 'Email is not valid',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else if(js['password'] !== js['repeat_password']) {
+      izitoast.error({
+        title: 'Error!',
+        message: 'Password and Repeat Password fields must match',
+        close: false,
+        position: 'topRight',
+        timeout: 3000,
+        zindex: 9999999999999
+      });
+    } else {
+      $.post(`${process.env.REACT_APP_DOMAIN_URL}/workers/users.php`, js, function(data){
+        data = JSON.parse(data);
+        if(data.error) {
+          izitoast.error({
+            title: 'Error!',
+            message: data.error,
+            close: false,
+            position: 'topRight',
+            timeout: 3000,
+            zindex: 9999999999999
+          });
+        } else if(data.success) {
+          clear(f);
+  
+          $('button.active').removeClass('active');
+          $('div.show').removeClass('show active');
+  
+          $('ul#myTab li:first-child button').addClass('active');
+          $('div.tab-content div:first-child').addClass('show active');
+  
+          izitoast.success({
+            title: 'Success!',
+            message: 'Registration successful. Now you can log in with your data',
+            close: false,
+            position: 'topRight',
+            timeout: 3000,
+            zindex: 9999999999999
+          });
+        }
+      });
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -203,7 +203,7 @@ function App() {
                 <span className="input-group-text" id="login_password">Password</span>
                 <input type="password" className="form-control login_password" required placeholder="Password" aria-label="Password" aria-describedby="login_password"></input>
               </div>
-              <button type="button" className="btn btn-primary login">Login</button>
+              <button type="button" className="btn btn-primary login" onClick={login}>Login</button>
             </div>
             <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab">
               <div className="input-group mb-3">
@@ -226,7 +226,7 @@ function App() {
                 <span className="input-group-text" id="register_rpassword">Repeat password</span>
                 <input type="password" className="form-control repeat_password" required placeholder="Repeat password" aria-label="Repeat password" aria-describedby="register_rpassword"></input>
               </div>
-              <button type="button" className="btn btn-primary register">Register</button>
+              <button type="button" className="btn btn-primary register" onClick={register}>Register</button>
             </div>
           </div>
         </div>
